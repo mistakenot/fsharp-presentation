@@ -1,4 +1,4 @@
-﻿namespace Mandelbrot.Lib
+﻿namespace Mandelbrot.Lib.FSharp
 
 open System
 

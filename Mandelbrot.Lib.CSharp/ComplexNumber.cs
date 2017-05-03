@@ -8,7 +8,7 @@ namespace Mandelbrot.Lib.CSharp
     ///  the square root of -1.
     /// See https://en.wikipedia.org/wiki/Complex_number for more.
     /// </summary>
-    public struct ComplexNumber
+    public struct ComplexNumber : IEquatable<ComplexNumber>
     {
         /// <summary>
         /// 'Real' part of the complex number.
@@ -57,7 +57,7 @@ namespace Mandelbrot.Lib.CSharp
         /// <summary>
         /// Zero value.
         /// </summary>
-        public static readonly ComplexNumber Zero = new ComplexNumber(0, 0);
+        public static readonly ComplexNumber Zero = new ComplexNumber(0.0f, 0.0f);
 
         /// <summary>
         /// Add together two Complex Numbers.
@@ -74,6 +74,7 @@ namespace Mandelbrot.Lib.CSharp
         {
             var realPart = (a.Re * b.Re) - (a.Im * b.Im);
             var imagPart = (a.Im * b.Re) + (a.Re * b.Im);
+
             return new ComplexNumber(realPart, imagPart);
         }
 

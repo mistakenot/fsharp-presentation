@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -69,6 +70,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -94,6 +96,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mandelbrot.Lib.CSharp\Mandelbrot.Lib.CSharp.csproj">
+      <Project>{628ebc72-8953-4998-bd24-7e484554ec65}</Project>
+      <Name>Mandelbrot.Lib.CSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mandelbrot.Lib\Mandelbrot.Lib.FSharp.fsproj">
+      <Project>{296a0ecd-69b4-4447-adf6-3f6280e514e3}</Project>
+      <Name>Mandelbrot.Lib.FSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
