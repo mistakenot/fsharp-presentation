@@ -35,7 +35,7 @@ let evens list =
 *)
 // List constructed as head and a tail
 let oneToThree = 1 :: [2; 3;]
-let fourToSeven = [for i in 4..7 -> i]
+let fourToSeven = [4..7]
 let oneToSeven = oneToThree @  fourToSeven
 
 // Maps
