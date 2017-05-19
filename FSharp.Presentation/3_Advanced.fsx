@@ -1,21 +1,11 @@
 ﻿(* 4.0 Computational Expressions
     - Allow you modify how keywords act to perform repetitive work
-    - Useful for chaining functions together (Monads)
+    - Useful for chaining functions together
 *)
 open System
-let tryGetString () = Some "0"      // Tries to read a string, Some if success, None if fail
-let tryParseInt str =               // Tries to parse int, Some if success, None if fail
-    try
-        let i = Int32.Parse str
-        Some i
-    with
-    | :? FormatException -> None
-
-let tryDivide x =                 // Tries to divide two numbers, Some if success, None if fail
-    try
-        Some (5 / x)
-    with
-    | :? DivideByZeroException -> None
+let tryGetString () : option<string> = failwith "not implemented"
+let tryParseInt (str: string) : option<int> = failwith "not implemented"
+let tryDivideZeroByX (x: int) : option<int> = failwith "not implemented"
 
 // Now to chain these functions together
 let uglyResult: option<int> = 
@@ -23,22 +13,23 @@ let uglyResult: option<int> =
     | Some str ->
         match tryParseInt str with
         | Some i -> 
-            match tryDivide i with
+            match tryDivideZeroByX i with
             | Some result -> Some result
             | None -> None
         | None -> None
     | None -> None
+// Yuck.
 
 // Or...
-// Builders are used to create computational expressions
-// Computational expressions modify how keywords work to perform 
-//  repetitive work
+// Builders are used to create 'computational expressions'
+// Computational expressions allow you to modify what keywords
+//  do to minimise boilerplate. (Monads)
 type OptionBuilder() =
-    member x.Bind(v,f) =        // Bind is used when let! is called
-        match v with 
-        | Some x -> f x
+    member x.Bind(previousResult, nextStep) = // Bind is used when let! is called
+        match previousResult with 
+        | Some x -> nextStep x
         | None -> None 
-    member x.Return v = Some v  // Return is used when return is called
+    member x.Return(value) = Some value  // Return is used when return is called
 
 // Create a singleton instance
 let option = OptionBuilder()
@@ -48,44 +39,12 @@ let betterResult: option<int> =
     option {
         let! str = tryGetString()
         let! i = tryParseInt str
-        let! result = tryDivide i
+        let! result = tryDivideZeroByX i
         return result
     }
 
 
-
-
-
-(* 4.1 Type Providers
-    - Allow you perform strongly typed queries on datasources
-    - Providers exist for Json, Sql, OData, etc.
-*)
-
-#r "FSharp.Data.TypeProviders.dll"
-#r "System.Data.Services.Client.dll"
-
-open Microsoft.FSharp.Data.TypeProviders
-open System.Linq
-
-type Northwind = ODataService<"http://services.odata.org/Northwind/Northwind.svc">
-let db = Northwind.GetDataContext()
-
-// Using C# linq
-let linqQuery = db.Customers.Where(fun c -> c.CustomerID = "1")
-
-// Using F# query expression
-let expressionQuery = 
-    query {
-        for customer in db.Customers do
-        where (customer.CustomerID = "1")
-        select customer
-    }
-
-
-
-
-
-(* 4.2 MailboxProcessor
+(* 4.1 MailboxProcessor
     - Lightweight async actors using the MailboxProcessor type
     - Actor is a recursive function that holds some state
 *)
@@ -110,3 +69,33 @@ let calculatorActor = MailboxProcessor.Start messageProcessor
 calculatorActor.Post (Add 1)
 calculatorActor.Post (Multiply 5)
 calculatorActor.Post (Add 3)
+
+
+
+
+
+(* 4.2 Type Providers
+    - Allow you perform strongly typed queries on datasources
+    - Providers exist for Json, Sql, OData, etc.
+*)
+
+#r "FSharp.Data.TypeProviders.dll"
+#r "System.Data.Services.Client.dll"
+
+open Microsoft.FSharp.Data.TypeProviders
+open System.Linq
+
+type Northwind = ODataService<"http://services.odata.org/Northwind/Northwind.svc">
+let db = Northwind.GetDataContext()
+
+// Using C# linq
+let linqQuery = db.Customers.Where(fun c -> c.CustomerID = "1")
+
+// Using F# query expression
+let expressionQuery = 
+    query {
+        for customer in db.Customers do
+        where (customer.CustomerID = "1")
+        select customer
+    }
+

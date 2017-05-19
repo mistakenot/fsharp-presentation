@@ -29,6 +29,7 @@ let inspiredBy = ["OCaml"; "Scala"; "ML"]
 *)
 
 let x = 1 + "two" // Inferred, strong types
+let y = 2
 
 let mutable y = 0 // Imperative programming support
 y <- 1
@@ -115,7 +116,8 @@ public static List<T> QuickSort<T>(List<T> values)
 *)
 
 // Quicksort implementation in fsharp
-let rec qsort = function
+let rec qsort list = 
+    match list with
     | [] -> []
     | x::xs -> let smaller = [for a in xs do if a <= x then yield a]
                let larger =  [for b in xs do if b > x then yield b]
