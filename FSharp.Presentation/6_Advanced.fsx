@@ -69,33 +69,3 @@ let calculatorActor = MailboxProcessor.Start messageProcessor
 calculatorActor.Post (Add 1)
 calculatorActor.Post (Multiply 5)
 calculatorActor.Post (Add 3)
-
-
-
-
-
-(* 4.2 Type Providers
-    - Allow you perform strongly typed queries on datasources
-    - Providers exist for Json, Sql, OData, etc.
-*)
-
-#r "FSharp.Data.TypeProviders.dll"
-#r "System.Data.Services.Client.dll"
-
-open Microsoft.FSharp.Data.TypeProviders
-open System.Linq
-
-type Northwind = ODataService<"http://services.odata.org/Northwind/Northwind.svc">
-let db = Northwind.GetDataContext()
-
-// Using C# linq
-let linqQuery = db.Customers.Where(fun c -> c.CustomerID = "1")
-
-// Using F# query expression
-let expressionQuery = 
-    query {
-        for customer in db.Customers do
-        where (customer.CustomerID = "1")
-        select customer
-    }
-
