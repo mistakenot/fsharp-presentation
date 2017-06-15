@@ -60,6 +60,8 @@
     <None Include="7_Railways.fsx" />
     <None Include="8_Validation.fsx" />
     <None Include="9_Testing.fsx" />
+    <None Include="10_EventSourcing.fsx" />
+    <None Include="11_Concurrency.fsx" />
     <None Include="Script1.fsx" />
     <None Include="ScriptTwo.fsx" />
     <Compile Include="Presentation.fs" />

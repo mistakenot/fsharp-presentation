@@ -5,30 +5,48 @@
 *)
 
 // Using it with lists
-let isListEmpty (list: list<_>) = 
+let isListEmpty list = 
     match list with
     | [] -> true
-    | _ -> false
+    | head::tail -> false
 
 let rec quicksort list = 
     match list with
     | [] -> []
     | head::tail ->
-        let (smaller, greater) = List.partition (fun i -> i < head) tail
+        let (smaller, greater) = List.partition ((>) head) tail
         quicksort smaller @ [head] @ quicksort greater
+
+
+
+
+
+
+
+
+
+
 
 // Using it with unions
 type BinaryTree<'a> = 
     | Empty
     | Node of ('a * BinaryTree<'a> * BinaryTree<'a>) 
 
-let rec insertValue tree x = 
+let rec insertValue x tree = 
     match tree with
-    | Empty -> Node (x, Empty, Empty)
-    | Node (elem, l, r) -> 
+    | Empty -> Node(x, Empty, Empty)
+    | Node(elem, left, right) -> 
         if x = elem then tree 
-        else if x < elem then insertValue l x 
-        else insertValue r x
+        else if x < elem then Node(elem, insertValue x left, right)
+        else Node(elem, left, insertValue x right)
+
+
+
+
+
+
+
+
 
 
 
@@ -37,7 +55,7 @@ type Json =
     | Null
     | Bool of bool
     | Number of float
-    | Value of string
+    | String of string
     | Array of list<Json>
     | Object of Map<string, Json>
 
@@ -47,7 +65,7 @@ let rec serialize json =
     | Null -> "null"
     | Bool b -> sprintf "%b" b
     | Number n -> sprintf "%f" n
-    | Value v -> sprintf "\"%s\"" v
+    | String v -> sprintf "\"%s\"" v
     | Array values -> 
         values 
         |> List.map serialize 
@@ -59,24 +77,30 @@ let rec serialize json =
         |> String.concat ","
         |> sprintf "{%s}"
 
+
+
+
+
+
+
+// Convience method
+let Object = Map.ofList >> Object
+
 let jsonValue: Json = 
-    [
-    ("Age", Number 27.0);
-    ("Name", Value "Alice");
-    ("PreviousTitles", Array [Value "Junior"; Value "Mid"]);
-    ("DoB", 
-        [
-        ("Year", Value "1987");
-        ("Month", Value "Feb");
-        ("Day", Value "12")
-        ]
-        |> Map.ofList
-        |> Object
-    )] 
-    |> Map.ofList 
-    |> Object
+    Object [
+        ("Age", Number 27.0);
+        ("Name", String "Alice");
+        ("PreviousTitles", Array [
+            String "Junior"; 
+            String "Mid"]);
+        ("DoB", Object [
+            ("Year", String "1987");
+            ("Month", String "Feb");
+            ("Day", String "12")]
+        )]
 
 serialize jsonValue |> printf "%s"
+
 (*
     {
       "DoB": {

@@ -29,8 +29,7 @@ type PromotionState = {
         Name = ""
         Products = Set.empty<ProductId>
         ZoneId = 0
-        Status = Draft
-    }
+        Status = Draft }
 
 let apply (state: PromotionState) (event: PromotionEvent) =
     match event with
@@ -48,7 +47,7 @@ let apply (state: PromotionState) (event: PromotionEvent) =
         | Draft -> state
         | Approved -> {state with Status = Draft}
 
-let aggregate events = Seq.fold apply PromotionState.empty events
+let replay events = Seq.fold apply PromotionState.empty events
 
 // Long form of above function
 let aggregateLong events = 
@@ -68,4 +67,4 @@ let testEvents = [
     RemoveProduct "Product1";
     Approve ]
 
-let currentState = aggregate testEvents
+let currentState = replay testEvents

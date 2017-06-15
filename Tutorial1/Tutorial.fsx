@@ -432,7 +432,7 @@ module UnionTypes =
               yield Queen
               yield King ]
                                    
-    type Card =  { Suit: Suit; Rank: Rank }
+    type Card = { Suit: Suit; Rank: Rank }
               
     /// Returns a list representing all the cards in the deck
     let fullDeck = 

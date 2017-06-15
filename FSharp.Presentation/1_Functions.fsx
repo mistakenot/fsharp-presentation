@@ -1,6 +1,6 @@
 ﻿(* 1.1 What is F#?
     - Created by Microsoft Research.
-    - Open source, cross platform.
+    - Open source, cross platform, interopable.
     - Multi paradigm.
     - Strongly, statically typed with inference.
 *)
@@ -9,7 +9,9 @@ let creator = "Don Syme @ Microsoft"
 
 let platforms = [".NET Framework"; ".NET Core"; "Mono"; "JavaScript"]
 
-let inspiredBy = ["OCaml"; "Scala"; "ML"]
+let inspiredBy = ["OCaml"; "Scala"; "Haskell"; "C#"]
+
+
 
 
 
@@ -43,6 +45,9 @@ let square i = multiply i i
 // Type of (float -> float)
 let multiplyByPi = multiply pi
 
+// Library functions
+let averageOfSequence = Seq.average [1.0; 2.0; 3.0]
+
 // Recursive functions can call themselves
 let rec factorial x = 
     if x < 2
@@ -52,6 +57,15 @@ let rec factorial x =
 // Anonomous functions are created with the fun keyword
 // Type of (int -> bool)
 let isValueEven = fun i -> (i%2) = 0
+
+// Infix functions
+let (=/=) x y = x <> y
+let result = 1 =/= 2
+
+
+
+
+
 
 
 
@@ -74,10 +88,15 @@ let areaOfCircleUsingArrows = square >> multiplyByPi
 // sprintf is a compiler-checked string formatting function
 let toString a = sprintf "%f metres squared" a
 
+let printBoolAndInt = sprintf "Bool is %b. Int is %i."
+
 // printfn is like sprintf, but writes to the console.
-let printAreaofCircle r = 
+let printAreaofCircle = 
     square
     >> multiplyByPi
     >> toString
     >> printfn "The area of this circle is %s."
+
+let radii = [1.0; 2.0; 3.0]
+let averageAreaOfCircles : seq<float> -> float = Seq.map areaOfCircle >> Seq.average
     

@@ -3,9 +3,25 @@
     - Useful for chaining functions together
 *)
 open System
-let tryGetString () : option<string> = failwith "not implemented"
-let tryParseInt (str: string) : option<int> = failwith "not implemented"
-let tryDivideZeroByX (x: int) : option<int> = failwith "not implemented"
+
+let tryGetString () : option<string> = 
+    failwith "not implemented"
+
+let tryParseInt (str: string) : option<int> = 
+    failwith "not implemented"
+
+let tryDivideZeroByX (x: int) : option<int> = 
+    failwith "not implemented"
+
+let getString = 
+    match tryGetString() with
+    | Some s -> printfn "Success! Result was %s" s
+    | None -> printfn "Failure."
+
+
+
+
+
 
 // Now to chain these functions together
 let uglyResult: option<int> = 
@@ -18,7 +34,13 @@ let uglyResult: option<int> =
             | None -> None
         | None -> None
     | None -> None
+
 // Yuck.
+
+
+
+
+
 
 // Or...
 // Builders are used to create 'computational expressions'
@@ -44,28 +66,12 @@ let betterResult: option<int> =
     }
 
 
-(* 4.1 MailboxProcessor
-    - Lightweight async actors using the MailboxProcessor type
-    - Actor is a recursive function that holds some state
-*)
-type Message = 
-    | Add of int
-    | Multiply of int
 
-let messageProcessor (mailbox: MailboxProcessor<Message>)  = 
-    let rec loop (state: int) = async {
-        let! msg = mailbox.Receive()        // Non-blocking wait for a message
-        let newState =                      // Update state depending on message
-            match msg with
-            | Add x -> state + x
-            | Multiply x -> state * x
-        printf "Updated to %i\n" newState   // Log the result
-        return! loop newState               // Non-blocking recursive call with new state
-    }
-    loop 0                                  // Start the loop with the default state
 
-let calculatorActor = MailboxProcessor.Start messageProcessor
+// Or we could create a custom operator
+let (?>>) value next = 
+    match value with
+    | Some v -> next v
+    | None -> None
 
-calculatorActor.Post (Add 1)
-calculatorActor.Post (Multiply 5)
-calculatorActor.Post (Add 3)
+let bestResult = tryGetString() ?>> tryParseInt ?>> tryDivideZeroByX

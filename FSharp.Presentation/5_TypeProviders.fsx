@@ -33,12 +33,19 @@ open System.Linq
 
 type Northwind = ODataService<"http://services.odata.org/Northwind/Northwind.svc">
 let db = Northwind.GetDataContext()
+
+
 // Using C# linq
-let getNamesOfManchesterCustomers = db.Customers.Where(fun c -> c.Region = "Manchester").Select(fun c -> c.ContactName)
+let getNamesOfManchesterCustomers = 
+    db.Customers.Take(10).Select(fun c -> c.ContactName)
+
+
 // Using F# query expression
 let expressionQuery = 
     query {
         for customer in db.Customers do
-        where (customer.Region = "Manchester")
+        take 10
         select customer
     }
+
+expressionQuery |> Seq.iter (fun customer -> printfn "%s" customer.ContactName)
