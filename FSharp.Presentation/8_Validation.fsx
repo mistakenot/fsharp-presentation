@@ -21,7 +21,11 @@ type ValidationError = {
     Msg: string
     Code: int }
 
-type ValidationRule<'a> = 'a -> ValidationError option
+type ValidationRule<'a> = 'a -> option<ValidationError>
+
+
+
+
 
 // Object is not null
 let notNull (o: Object) =

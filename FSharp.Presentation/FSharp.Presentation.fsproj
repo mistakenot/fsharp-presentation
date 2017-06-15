@@ -56,9 +56,9 @@
     <None Include="3_Collections.fsx" />
     <None Include="4_PatternMatching.fsx" />
     <None Include="5_TypeProviders.fsx" />
-    <None Include="8_Testing.fsx" />
-    <None Include="6_CompExpressions.fsx" />
-    <None Include="7_Validation.fsx" />
+    <None Include="6_Testing.fsx" />
+    <None Include="7_CompExpressions.fsx" />
+    <None Include="8_Validation.fsx" />
     <None Include="9_EventSourcing.fsx" />
     <None Include="10_Concurrency.fsx" />
     <Content Include="packages.config" />

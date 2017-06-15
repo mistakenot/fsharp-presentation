@@ -44,12 +44,12 @@ type Monoid<'a> =
 
 // There exists an element e in S such that for every element 
 //  a in S, the equations e • a = a • e = a hold.
-let combineZero (monoid: Monoid<int>) (x: int) = 
-    (monoid.Combine x monoid.Zero) = x && (monoid.Combine monoid.Zero x) = x
+let combineZero (m: Monoid<int>) (x: int) = 
+    (m.Combine x m.Zero) = x && (m.Combine m.Zero x) = x
 
 // For all a, b and c in S, the equation (a • b) • c = a • (b • c) holds.
-let isAssociative (monoid: Monoid<int>) (x: int) (y: int) (z: int) = 
-    ((monoid.Combine x y) |> monoid.Combine z) = (monoid.Combine x <| (monoid.Combine y z))
+let isAssociative (m: Monoid<int>) (x: int) (y: int) (z: int) = 
+    ((m.Combine x y) |> m.Combine z) = (m.Combine x <| (m.Combine y z))
 
 
 // Two implementations

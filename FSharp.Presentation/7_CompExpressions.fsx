@@ -18,7 +18,9 @@ let getString =
     | Some s -> printfn "Success! Result was %s" s
     | None -> printfn "Failure."
 
-
+// type Option<'a> = 
+//  | Some 'a
+//  | None
 
 
 
@@ -69,9 +71,9 @@ let betterResult: option<int> =
 
 
 // Or we could create a custom operator
-let (?>>) value next = 
+let (>?>) value next = 
     match value with
     | Some v -> next v
     | None -> None
 
-let bestResult = tryGetString() ?>> tryParseInt ?>> tryDivideZeroByX
+let bestResult = tryGetString() >?> tryParseInt >?> tryDivideZeroByX
