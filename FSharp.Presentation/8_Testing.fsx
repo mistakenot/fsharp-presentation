@@ -65,9 +65,11 @@ type SubtractionMonoid () =
 
 
 let additionMonoid = new AdditionMonoid()
+
 combineZero additionMonoid |> Check.Quick
 isAssociative additionMonoid |> Check.Quick
 
 let subtractionMonoid = new SubtractionMonoid()
+
 combineZero subtractionMonoid |> Check.Quick
 isAssociative subtractionMonoid |> Check.Quick
