@@ -76,6 +76,7 @@ let isValidGuid (g: Guid) =
 
 // Combines two validators together.
 // The first one to fail is returned.
+// Aka Bind
 let (>=>) va vb value = 
     match va value with 
     | Some error -> Some error
@@ -130,8 +131,11 @@ let (>@>) va vb value =
 //    NiNumber: string }
 let idValidator = isValidGuid >> asList
 let nameValidator = notNull >=> (minLength 5 >=> maxLength 20) >> asList
-let dobValidator = ageGreaterThan 18 >@> ageLessThan 70
+let dobValidator = ageGreaterThan 18 >=> ageLessThan 70 >> asList
 let niValidator = notNull >=> (exactLength 8 >=> isHex) >> asList
+
+
+
 
 let validate (e: Employee) = 
     idValidator e.Id 
